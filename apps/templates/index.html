@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    首页
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">饿了吗商家管理系统</h1>
+        <hr>
+        {% if current_user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong class="text-danger">{{ current_user.username }}</strong> 的店铺：
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>店铺名称</th>
+                        <th>店铺评分</th>
+                        <th>起送价格</th>
+                        <th>配送费</th>
+                        <th>菜品分类</th>
+                        <th>菜品信息</th>
+                    </tr>
+                    </thead>
+                    {% if stores %}
+                        <tbody>
+                        {% for store in stores %}
+                            <tr>
+                                <th>{{ loop.index }}</th>
+                                <th>
+                                    <a href="{{ url_for('cms.update_shop', shop_pid=store.pub_id) }}">{{ store.shop_name }}</a>
+                                </th>
+                                <th>{{ store.shop_rating }}</th>
+                                <th>￥ {{ store.start_send }}</th>
+                                <th>￥ {{ store.send_cost }}</th>
+                                <th>
+                                    <a href="{{ url_for('cms.add_cate', shop_pid=store.pub_id) }}">添加</a>
+                                    &nbsp;&nbsp;
+                                    <a href="{{url_for('cms.show_cate', shop_pid=store.pub_id) }}">查看</a>
+                                </th>
+                                <th>
+                                    <a href="{{ url_for('cms.add_food', shop_pid=store.pub_id) }}">添加</a>
+                                    &nbsp;&nbsp;
+                                    <a href="{{url_for('cms.show_food', shop_pid=store.pub_id) }}">查看</a>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% else %}
+                        <div><a href="{{ url_for('cms.add_shop') }}">还没有店铺那，赶快添加一个店铺吧...</a></div>
+                    {% endif %}
+                </table>
+            </div>
+        {% else %}
+            <div>饿了吗平台欢迎您入驻，赶快加入我们吧</div>
+        {% endif %}
+    </div>
+{% endblock %}

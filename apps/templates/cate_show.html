@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    菜品分类
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">菜品分类</h1>
+        <hr>
+        {% if current_user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong class="text-danger">{{ shop.shop_name }}</strong> 的菜单分类：
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>分类名称</th>
+                        <th>菜品信息</th>
+                        <th>平均价钱</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cate in cates %}
+                        <tr>
+                            <th>{{ loop.index }}</th>
+                            <th>
+                                <a href="{{ url_for('cms.update_cate', shop_pid=shop.pub_id, cate_id=cate.id) }}">{{ cate.name }}</a>
+                            </th>
+                            <th>
+                                <a href="{{ url_for('cms.add_food', shop_pid=shop.pub_id) }}">添加</a>
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="badge">{{ cate.total }}</span>
+                            </th>
+                            <th>￥ {{ cate.average }}</th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <p></p>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    菜品信息
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">菜品明细</h1>
+        <hr>
+        {% if current_user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong class="text-danger">{{ shop.shop_name }}</strong> <span>的菜单清单：</span>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>菜品名称</th>
+                        <th>菜品价钱</th>
+                        <th>菜品销量</th>
+                        <th>菜品评分</th>
+                        <th>菜品操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr class="well well-sm">
+                            <th><span style="color:#d29091;">{{ item[0] }}</span></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for t in item[1] %}
+                            <tr>
+                                <th>{{ loop.index }}</th>
+                                <th>{{ t.goods_name }}</th>
+                                <th>{{ t.goods_price }}</th>
+                                <th>{{ t.month_sales }}</th>
+                                <th>{{ t.rating_count }}</th>
+                                <th>
+                                    <a href="{{ url_for('cms.update_food', shop_pid=shop.pub_id, food_id=t.id) }}">编辑</a>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <p></p>
+    </div>
+{% endblock %}
